@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js制作課題③－２</title>
+</head>
+<body>
+    <h1>ToDoリスト</h1>
+    <form action="#" method="get" name="FizzBuzz"></form>
+        <input type="radio" name="select-item">全て
+        <input type="radio" name="select-item">作業中
+        <input type="radio" name="select-item">完了
+        <h2>新規タスクの追加</h2>
+        <input type="text" id="add-todo">
+        <input type="button" id="add-btn" value="追加">
+    </form>
+    <table>
+        <thead>
+          <th>ID</th>
+          <th> コメント </th>
+          <th> 状態 </th>
+          <th></th>
+        </thead>
+        <tbody  id="display">
+        </tbody>
+    </table>
+
+    <script>
+        'use strict';
+        //値の取得
+        const todoList =[];
+        const btn = document.getElementById('add-btn');
+        btn.addEventListener('click',displayList);
+        
+        //空の配列に入力値を入れていくfunction
+        function displayList(){
+            const todo = document.getElementById("add-todo").value;
+            document.getElementById("add-todo").value = "";
+            const todos = {task:todo,status:`作業中`};
+            const tasks = todoList.task;
+            if(todo){
+            todoList.push(todos);
+            displayResult();
+            }
+        };
+
+        //表示function
+        const displayResult = () => {
+            const todoListElement = document.getElementById('display');
+            while(todoListElement.firstChild){
+                todoListElement.removeChild(todoListElement.firstChild);
+            };
+
+            todoList.forEach((todo,index) => {
+            const trList = document.createElement('tr');
+
+            //index番号の表示
+            const tdIndex = document.createElement('td');
+            tdIndex.textContent = index;
+
+            //コメントの表示
+            const tdValue = document.createElement('td');
+            tdValue.textContent = todo.task;
+            
+            //作業中、削除ボタンの表示
+            const tdBtn = document.createElement('td');
+            const Conbtn = document.createElement("button");
+            const removebtn = document.createElement("button");
+            Conbtn.textContent = "作業中";
+            removebtn.textContent = "削除";
+            console.log(todoList);
+            // workbtn.addEventListener('click',event =>{
+            //     removeClick();
+            // };
+            removebtn.addEventListener('click',event =>{
+                removeClick(index);
+            });
+            trList.appendChild(tdIndex);
+            trList.appendChild(tdValue);
+            trList.appendChild(Conbtn);
+            trList.appendChild(removebtn);
+            document.getElementById('display').appendChild(trList);
+            });
+        };
+
+        //作業中を押す
+        function ConClick(){
+            console.log("osshitawork");
+        };
+
+        //削除を押す
+        const removeClick = index =>{
+            todoList.splice(index,1);
+            displayResult();
+        };
+    </script>
+</body>
+</html>
