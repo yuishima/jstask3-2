@@ -65,28 +65,29 @@
             
             //作業中、削除ボタンの表示
             const tdBtn = document.createElement('td');
-            const Conbtn = document.createElement("button");
-            const removebtn = document.createElement("button");
-            Conbtn.textContent = "作業中";
-            removebtn.textContent = "削除";
-            console.log(todoList);
-            // workbtn.addEventListener('click',event =>{
-            //     removeClick();
-            // };
-            removebtn.addEventListener('click',event =>{
+            const checkBtn = document.createElement("input");
+            checkBtn.setAttribute('type','button');
+            checkBtn.setAttribute('value','作業中');
+            const removeBtn = document.createElement("input");
+            removeBtn.setAttribute('type','button');
+            removeBtn.setAttribute('value','削除');
+            checkBtn.addEventListener('click',event =>{
+                checkClick(index);
+            });
+            removeBtn.addEventListener('click',event =>{
                 removeClick(index);
             });
             trList.appendChild(tdIndex);
             trList.appendChild(tdValue);
-            trList.appendChild(Conbtn);
-            trList.appendChild(removebtn);
+            trList.appendChild(checkBtn);
+            trList.appendChild(removeBtn);
             document.getElementById('display').appendChild(trList);
             });
         };
 
         //作業中を押す
-        function ConClick(){
-            console.log("osshitawork");
+        const checkClick = index =>{
+       console.log('check');
         };
 
         //削除を押す
