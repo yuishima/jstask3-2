@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>ToDoリスト</h1>
-    <div action="#" method="get" name="todo-list">
+    <div id="todo-list">
         <input type="radio" name="select-item">全て
         <input type="radio" name="select-item">作業中
         <input type="radio" name="select-item">完了
@@ -31,7 +31,7 @@
         const todoList = [];
         const btn = document.getElementById('add-btn');
         const todoListElement = document.getElementById('display');
-        btn.addEventListener('click',() => {
+        btn.addEventListener('click', () => {
             displayList();
         });
         //空の配列に入力値を入れていくfunction
@@ -50,7 +50,7 @@
             while(todoListElement.firstChild){
                 todoListElement.removeChild(todoListElement.firstChild);
             };
-            todoList.forEach((todo,index) => {
+            todoList.forEach((todo, index) => {
                 const trList = document.createElement('tr');
                 //index番号の表示
                 const tdIndex = document.createElement('td');
@@ -61,15 +61,15 @@
                 //作業中、削除ボタンの表示
                 const tdBtn = document.createElement('td');
                 const checkBtn = document.createElement('input');
-                checkBtn.setAttribute('type','button');
-                checkBtn.setAttribute('value',todo.status);
+                checkBtn.setAttribute('type',  'button');
+                checkBtn.setAttribute('value', todo.status);
                 const removeBtn = document.createElement('input');
-                removeBtn.setAttribute('type','button');
-                removeBtn.setAttribute('value','削除');
-                checkBtn.addEventListener('click',() => {
+                removeBtn.setAttribute('type', 'button');
+                removeBtn.setAttribute('value', '削除');
+                checkBtn.addEventListener('click', () => {
                     checkTodo(todo);
                 });
-                removeBtn.addEventListener('click',() => {
+                removeBtn.addEventListener('click', () => {
                     removeTodo(index);
                 });
                 trList.appendChild(tdIndex);
@@ -85,7 +85,7 @@
         };
         //削除を押す
         function removeTodo(index){
-            todoList.splice(index,1);
+            todoList.splice(index, 1);
             displayResult();
         };
     </script>
