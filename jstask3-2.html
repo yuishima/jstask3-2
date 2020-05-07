@@ -76,9 +76,8 @@
             checkBtn.setAttribute('type', 'button');
             checkBtn.setAttribute('value', todo.status);
             checkBtn.addEventListener('click', () => {
-                    checkTodo(todo);
+                checkTodo(todo);
             });
-            tdBtn.appendChild(checkBtn);
             return checkBtn;
         };
         //削除ボタンの生成function
@@ -90,7 +89,6 @@
             removeBtn.addEventListener('click', () => {
                 removeTodo(index);
             });
-            tdBtn.appendChild(removeBtn);
             return removeBtn;
         };
         //作業中を押す
