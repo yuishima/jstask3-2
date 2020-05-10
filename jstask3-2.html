@@ -91,12 +91,12 @@
             });
             return removeBtn;
         };
-             //作業中を押す
-             const checkTodo = (todo) =>{
+        //作業中を押す
+        const checkTodo = (todo) =>{
             if(todo.status === "作業中"){
-            todo.status = "完了";
+                todo.status = "完了";
             }else{
-            todo.status = "作業中";
+                todo.status = "作業中";
             };
             console.log(todo.status);
             displayResult();
