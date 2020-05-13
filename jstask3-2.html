@@ -92,8 +92,14 @@
             return removeBtn;
         };
         //作業中を押す
-        const checkTodo = (index) => {
-            console.log('check');
+        const checkTodo = (todo) =>{
+            if(todo.status === "作業中"){
+                todo.status = "完了";
+            }else{
+                todo.status = "作業中";
+            };
+            console.log(todo.status);
+            displayResult();
         };
         //削除を押す
         const removeTodo = (index) => {
