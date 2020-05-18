@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+develop
     <title>js制作課題③-4</title>
+master
 </head>
 <body>
     <h1>ToDoリスト</h1>
     <div id="todo-list">
-        <input type="radio" name="select-item" id="all-select" checked>全て
-        <input type="radio" name="select-item" id="doing-select">作業中
-        <input type="radio" name="select-item" id="done-select">完了
+        <input type="radio" name="select-item">全て
+        <input type="radio" name="select-item">作業中
+        <input type="radio" name="select-item">完了
         <h2>新規タスクの追加</h2>
         <input type="text" id="add-todo">
         <input type="button" id="add-btn" value="追加">
@@ -27,7 +29,7 @@
     </table>
     <script>
         'use strict';
-        //配列定義
+        //配列を定義する
         const todoList = [];
         const btn = document.getElementById('add-btn');
         const todoListElement = document.getElementById('display');
@@ -38,9 +40,14 @@
         const displayList = () => {
             const todo = document.getElementById("add-todo").value;
             document.getElementById("add-todo").value = "";
+            const todoItem = {task: todo, status: '作業中'};
             const tasks = todoList.task;
             if(todo){
+ develop
                 todoList.push({id: todoList.length, task: todo, status: '作業中'});
+                todoList.push(todoItem);
+                displayResult();
+ master
             }
             if(document.getElementById("all-select").checked){
                 displayResult(todoList);
@@ -53,21 +60,29 @@
             };
         };
         //表示function
+ develop
         const displayResult = (filteredTodoList) => {
             while(todoListElement.firstChild){
                 todoListElement.removeChild(todoListElement.firstChild);
             };
             filteredTodoList.forEach((todo, index) => {
+
+        const displayResult = () => {
+            while(todoListElement.firstChild){
+                todoListElement.removeChild(todoListElement.firstChild);
+            };
+            todoList.forEach((todo, index) => {
+ master
                 const trList = document.createElement('tr');
                 //index番号の要素追加
                 const tdIndex = document.createElement('td');
-                tdIndex.textContent = todo.id;
+                tdIndex.textContent = index;
                 //コメントの要素追加
                 const tdValue = document.createElement('td');
                 tdValue.textContent = todo.task;
                 //作業中、削除ボタンの要素追加
                 const checkButton = createCheckButton(todo);
-                const removeButton = createRemoveButton(todo.id);
+                const removeButton = createRemoveButton(index);
                 //表示
                 trList.appendChild(tdIndex);
                 trList.appendChild(tdValue);
@@ -106,13 +121,14 @@
             todo.status = "作業中";
             };
             console.log(todo.status);
-            displayResult(todoList);
+            displayResult();
         };
         //削除を押す
-        const removeTodo = (index) =>{
-            todoList.splice(index,1);
-            displayResult(todoList);
+        const removeTodo = (index) => {
+            todoList.splice(index, 1);
+            displayResult();
         };
+ develop
         //全体リストアップ
         const allRadio = document.getElementById('all-select');
         allRadio.addEventListener('change', () =>{
@@ -131,6 +147,7 @@
             const filteredTodoList = todoList.filter(todo => todo.status === "完了");
             displayResult(filteredTodoList);
         });
+ master
     </script>
 </body>
 </html>
