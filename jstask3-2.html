@@ -22,7 +22,7 @@
             <th> 状態 </th>
             <th></th>
         </thead>
-        <tbody id="display">
+        <tbody  id="display">
         </tbody>
     </table>
     <script>
@@ -39,17 +39,25 @@
             const todo = document.getElementById("add-todo").value;
             document.getElementById("add-todo").value = "";
             const tasks = todoList.task;
-            if (todo) {
-                todoList.push({ id: todoList.length, task: todo, status: '作業中' });
-                displayResult(todoList);
+            if(todo){
+                todoList.push({id: todoList.length, task: todo, status: '作業中'});
             }
+            if(document.getElementById("all-select").checked){
+                displayResult(todoList);
+            }else if(document.getElementById("doing-select").checked){
+                const filteredTodoList = todoList.filter(todo => todo.status === "作業中");
+                displayResult(filteredTodoList);
+            }else{
+                const filteredTodoList = todoList.filter(todo => todo.status === "完了");
+                displayResult(filteredTodoList);
+            };
         };
         //表示function
-        const displayResult = (filterdTodoList) => {
-            while (todoListElement.firstChild) {
+        const displayResult = (filteredTodoList) => {
+            while(todoListElement.firstChild){
                 todoListElement.removeChild(todoListElement.firstChild);
             };
-            filterdTodoList.forEach((todo, index) => {
+            filteredTodoList.forEach((todo, index) => {
                 const trList = document.createElement('tr');
                 //index番号の要素追加
                 const tdIndex = document.createElement('td');
@@ -91,37 +99,37 @@
             return removeBtn;
         };
         //作業中を押す
-        const checkTodo = (todo) => {
-            if (todo.status === "作業中") {
-                todo.status = "完了";
-            } else {
-                todo.status = "作業中";
+        const checkTodo = (todo) =>{
+            if(todo.status === "作業中"){
+            todo.status = "完了";
+            }else{
+            todo.status = "作業中";
             };
             console.log(todo.status);
             displayResult(todoList);
         };
         //削除を押す
-        const removeTodo = (index) => {
-            todoList.splice(index, 1);
+        const removeTodo = (index) =>{
+            todoList.splice(index,1);
             displayResult(todoList);
         };
         //全体リストアップ
         const allRadio = document.getElementById('all-select');
-        allRadio.addEventListener('click', () => {
-            const filterdTodoList = todoList;
-            displayResult(filterdTodoList);
+        allRadio.addEventListener('click', () =>{
+            const filteredTodoList = todoList;
+            displayResult(filteredTodoList);
         });
         //作業中リストアップ
         const doingRadio = document.getElementById('doing-select');
-        doingRadio.addEventListener('click', () => {
-            const filterdTodoList = todoList.filter(todo => todo.status === "作業中");
-            displayResult(filterdTodoList);
+        doingRadio.addEventListener('click', () =>{
+            const filteredTodoList = todoList.filter(todo => todo.status === "作業中");
+            displayResult(filteredTodoList);
         });
-        //完了リストアップ
+　　　　//完了リストアップ
         const doneRadio = document.getElementById('done-select');
-        doneRadio.addEventListener('click', () => {
-            const filterdTodoList = todoList.filter(todo => todo.status === "完了");
-            displayResult(filterdTodoList);
+        doneRadio.addEventListener('click', () =>{
+            const filteredTodoList = todoList.filter(todo => todo.status === "完了");
+            displayResult(filteredTodoList);
         });
     </script>
 </body>
