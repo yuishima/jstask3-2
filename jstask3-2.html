@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>js制作課題③-4</title>
 </head>
+
 <body>
     <h1>ToDoリスト</h1>
     <div id="todo-list">
@@ -39,26 +41,22 @@
             const todo = document.getElementById("add-todo").value;
             document.getElementById("add-todo").value = "";
             const tasks = todoList.task;
- HEAD
             if (todo) {
                 todoList.push({ id: todoList.length, task: todo, status: '作業中' });
-
-            if(todo){
-                todoList.push({id: todoList.length, task: todo, status: '作業中'});
             }
-            if(document.getElementById("all-select").checked){
+            if (document.getElementById("all-select").checked) {
                 displayResult(todoList);
-            }
+            } else if (document.getElementById("doing-select").checked) {
+                const filteredTodoList = todoList.filter(todo => todo.status === "作業中");
+                displayResult(filteredTodoList);
+            } else {
+                const filteredTodoList = todoList.filter(todo => todo.status === "完了");
+                displayResult(filteredTodoList);
+            };
         };
         //表示function
- HEAD
-        const displayResult = (filterdTodoList) => {
+        const displayResult = (filteredTodoList) => {
             while (todoListElement.firstChild) {
-                todoListElement.removeChild(todoListElement.firstChild);
-            };
-            filterdTodoList.forEach((todo, index) => {
-            const displayResult = (filteredTodoList) => {
-            while(todoListElement.firstChild){
                 todoListElement.removeChild(todoListElement.firstChild);
             };
             filteredTodoList.forEach((todo, index) => {
@@ -113,32 +111,29 @@
             displayResult(todoList);
         };
         //削除を押す
- HEAD
         const removeTodo = (index) => {
             todoList.splice(index, 1);
-
-        const removeTodo = (index) =>{
-            todoList.splice(index,1);
             displayResult(todoList);
         };
         //全体リストアップ
         const allRadio = document.getElementById('all-select');
         allRadio.addEventListener('click', () => {
-            const filterdTodoList = todoList;
-            displayResult(filterdTodoList);
+            const filteredTodoList = todoList;
+            displayResult(filteredTodoList);
         });
         //作業中リストアップ
         const doingRadio = document.getElementById('doing-select');
         doingRadio.addEventListener('click', () => {
-            const filterdTodoList = todoList.filter(todo => todo.status === "作業中");
-            displayResult(filterdTodoList);
+            const filteredTodoList = todoList.filter(todo => todo.status === "作業中");
+            displayResult(filteredTodoList);
         });
         //完了リストアップ
         const doneRadio = document.getElementById('done-select');
         doneRadio.addEventListener('click', () => {
-            const filterdTodoList = todoList.filter(todo => todo.status === "完了");
-            displayResult(filterdTodoList);
+            const filteredTodoList = todoList.filter(todo => todo.status === "完了");
+            displayResult(filteredTodoList);
         });
     </script>
 </body>
+
 </html>
