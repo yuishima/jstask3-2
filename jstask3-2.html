@@ -115,19 +115,19 @@
         };
         //全体リストアップ
         const allRadio = document.getElementById('all-select');
-        allRadio.addEventListener('change', () =>{
+        allRadio.addEventListener('click', () =>{
             const filteredTodoList = todoList;
             displayResult(filteredTodoList);
         });
         //作業中リストアップ
         const doingRadio = document.getElementById('doing-select');
-        doingRadio.addEventListener('change', () =>{
+        doingRadio.addEventListener('click', () =>{
             const filteredTodoList = todoList.filter(todo => todo.status === "作業中");
             displayResult(filteredTodoList);
         });
 　　　　//完了リストアップ
         const doneRadio = document.getElementById('done-select');
-        doneRadio.addEventListener('change', () =>{
+        doneRadio.addEventListener('click', () =>{
             const filteredTodoList = todoList.filter(todo => todo.status === "完了");
             displayResult(filteredTodoList);
         });
