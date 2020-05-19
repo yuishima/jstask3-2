@@ -47,7 +47,6 @@
                 todoList.push({id: todoList.length, task: todo, status: '作業中'});
             }
             if(document.getElementById("all-select").checked){
- parent of 3e0550d... Merge branch 'master' into develop
                 displayResult(todoList);
             }
         };
@@ -58,12 +57,11 @@
                 todoListElement.removeChild(todoListElement.firstChild);
             };
             filterdTodoList.forEach((todo, index) => {
-        const displayResult = (filteredTodoList) => {
+            const displayResult = (filteredTodoList) => {
             while(todoListElement.firstChild){
                 todoListElement.removeChild(todoListElement.firstChild);
             };
             filteredTodoList.forEach((todo, index) => {
- parent of 3e0550d... Merge branch 'master' into develop
                 const trList = document.createElement('tr');
                 //index番号の要素追加
                 const tdIndex = document.createElement('td');
@@ -121,7 +119,6 @@
 
         const removeTodo = (index) =>{
             todoList.splice(index,1);
- parent of 3e0550d... Merge branch 'master' into develop
             displayResult(todoList);
         };
         //全体リストアップ
