@@ -10,9 +10,9 @@
 <body>
     <h1>ToDoリスト</h1>
     <div id="todo-list">
-        <input type="radio" name="select-item" id="all-select" checked>全て
-        <input type="radio" name="select-item" id="doing-select">作業中
-        <input type="radio" name="select-item" id="done-select">完了
+        <input type="radio" name="select-item" id="all-select" value="全て" checked>全て
+        <input type="radio" name="select-item" id="doing-select" value="作業中">作業中
+        <input type="radio" name="select-item" id="done-select" value="完了">完了
         <h2>新規タスクの追加</h2>
         <input type="text" id="add-todo">
         <input type="button" id="add-btn" value="追加">
@@ -107,7 +107,6 @@
             } else {
                 todo.status = "作業中";
             };
-            console.log(todo.status);
             displayResult(todoList);
         };
         //削除を押す
@@ -115,23 +114,18 @@
             todoList.splice(index, 1);
             displayResult(todoList);
         };
-        //全体リストアップ
-        const allRadio = document.getElementById('all-select');
-        allRadio.addEventListener('click', () => {
-            const filteredTodoList = todoList;
-            displayResult(filteredTodoList);
-        });
-        //作業中リストアップ
-        const doingRadio = document.getElementById('doing-select');
-        doingRadio.addEventListener('click', () => {
-            const filteredTodoList = todoList.filter(todo => todo.status === "作業中");
-            displayResult(filteredTodoList);
-        });
-        //完了リストアップ
-        const doneRadio = document.getElementById('done-select');
-        doneRadio.addEventListener('click', () => {
-            const filteredTodoList = todoList.filter(todo => todo.status === "完了");
-            displayResult(filteredTodoList);
+        //全体リストアップ、ステータスに合わせてリストアップ
+        const selectRadio = document.querySelectorAll('input[type=radio]');
+        selectRadio.forEach((elem, index) => {
+            elem.addEventListener('change', () => {
+                const radioItem = document.getElementsByName('select-item');
+                if (radioItem[0].checked === true) {
+                    displayResult(todoList);
+                } else {
+                    const filteredTodoList = todoList.filter(todo => todo.status === radioItem[index].value);
+                    displayResult(filteredTodoList);
+                }
+            });
         });
     </script>
 </body>
