@@ -29,9 +29,10 @@
     </table>
     <script>
         'use strict';
-        //配列定義
+        //配列定義、要素を取ってくる
         const todoList = [];
         const btn = document.getElementById('add-btn');
+        const radioItem = document.getElementsByName('select-item');
         const todoListElement = document.getElementById('display');
         btn.addEventListener('click', () => {
             displayList();
@@ -69,7 +70,7 @@
                 tdValue.textContent = todo.task;
                 //作業中、削除ボタンの要素追加
                 const checkButton = createCheckButton(todo);
-                const removeButton = createRemoveButton(todo.id);
+                const removeButton = createRemoveButton(index);
                 //表示
                 trList.appendChild(tdIndex);
                 trList.appendChild(tdValue);
@@ -80,11 +81,13 @@
         };
         //作業中ボタンの生成function
         const createCheckButton = (todo) => {
+            const selectRadio = document.getElementsByName('select-item');
             const tdBtn = document.createElement('td');
             const checkBtn = document.createElement('input');
             checkBtn.setAttribute('type', 'button');
             checkBtn.setAttribute('value', todo.status);
-            checkBtn.addEventListener('click', () => {
+            checkBtn.addEventListener('click', (selectRadio) => {
+                console.log(selectRadio);
                 checkTodo(todo);
             });
             return checkBtn;
@@ -102,27 +105,50 @@
         };
         //作業中を押す
         const checkTodo = (todo) => {
-            if (todo.status === "作業中") {
-                todo.status = "完了";
+            if (radioItem[0].checked === true) {
+                if (todo.status === "作業中") {
+                    todo.status = "完了";
+                } else {
+                    todo.status = "作業中";
+                }
+                displayResult(todoList);
             } else {
-                todo.status = "作業中";
+                if (todo.status === "作業中") {
+                    todo.status = "完了";
+                    const filteredTodoList = todoList.filter(todo => todo.status === "作業中");
+                    displayResult(filteredTodoList);
+                } else {
+                    todo.status = "作業中";
+                    const filteredTodoList = todoList.filter(todo => todo.status === "完了");
+                    displayResult(filteredTodoList);
+                };
             };
-            displayResult(todoList);
         };
         //削除を押す
         const removeTodo = (index) => {
-            todoList.splice(index, 1);
-            displayResult(todoList);
+            // todoList.splice(index, 1);
+            if (radioItem[0].checked === true) {
+                todoList.splice(index, 1);
+                displayResult(todoList);
+            } else {
+                if (radioItem[1].checked === true) {
+                    const filteredTodoList = todoList.filter(todo => todo.status === "作業中");
+                    console.log(filteredTodoList);
+                    displayResult(filteredTodoList);
+                } else {
+                    const filteredTodoList = todoList.filter(todo => todo.status === "完了");
+                    displayResult(filteredTodoList);
+                }
+            }
         };
         //全体リストアップ、ステータスに合わせてリストアップ
-        const selectRadio = document.querySelectorAll('input[type=radio]');
-        selectRadio.forEach((elem, index) => {
-            elem.addEventListener('change', () => {
-                const radioItem = document.getElementsByName('select-item');
-                if (radioItem[0].checked === true) {
+        const selectRadio = document.getElementsByName('select-item');
+        selectRadio.forEach((elem, todo) => {
+            elem.addEventListener('change', (event) => {
+                if (event.target.id === "all-select") {
                     displayResult(todoList);
                 } else {
-                    const filteredTodoList = todoList.filter(todo => todo.status === radioItem[index].value);
+                    const filteredTodoList = todoList.filter(todo => todo.status === event.target.defaultValue);
                     displayResult(filteredTodoList);
                 }
             });
