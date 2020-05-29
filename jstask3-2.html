@@ -70,7 +70,7 @@
                 tdValue.textContent = todo.task;
                 //作業中、削除ボタンの要素追加
                 const checkButton = createCheckButton(todo);
-                const removeButton = createRemoveButton(index);
+                const removeButton = createRemoveButton(index,todo);
                 //表示
                 trList.appendChild(tdIndex);
                 trList.appendChild(tdValue);
@@ -93,13 +93,18 @@
             return checkBtn;
         };
         //削除ボタンの生成function
-        const createRemoveButton = (index) => {
+        const createRemoveButton = (index,todo) => {
             const tdBtn = document.createElement('td');
             const removeBtn = document.createElement('input');
             removeBtn.setAttribute('type', 'button');
             removeBtn.setAttribute('value', '削除');
             removeBtn.addEventListener('click', () => {
-                removeTodo(index);
+                for(let i = 0;i < todoList.length; i++){
+                    if(todoList[i]['id'] === todo.id){
+                        console.log(i);
+                        removeTodo(index,todo,i);
+                    };
+                }
             });
             return removeBtn;
         };
@@ -125,15 +130,13 @@
             };
         };
         //削除を押す
-        const removeTodo = (index) => {
-            // todoList.splice(index, 1);
+        const removeTodo = (index,todo,i) => {
+            todoList.splice(i,1);
             if (radioItem[0].checked === true) {
-                todoList.splice(index, 1);
                 displayResult(todoList);
             } else {
                 if (radioItem[1].checked === true) {
                     const filteredTodoList = todoList.filter(todo => todo.status === "作業中");
-                    console.log(filteredTodoList);
                     displayResult(filteredTodoList);
                 } else {
                     const filteredTodoList = todoList.filter(todo => todo.status === "完了");
