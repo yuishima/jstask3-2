@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>js制作課題③－２</title>
+    <title>js制作課題③-4</title>
 </head>
+
 <body>
     <h1>ToDoリスト</h1>
     <div id="todo-list">
-        <input type="radio" name="select-item">全て
-        <input type="radio" name="select-item">作業中
-        <input type="radio" name="select-item">完了
+        <input type="radio" name="select-item" id="all-select" value="全て" checked>全て
+        <input type="radio" name="select-item" id="doing-select" value="作業中">作業中
+        <input type="radio" name="select-item" id="done-select" value="完了">完了
         <h2>新規タスクの追加</h2>
         <input type="text" id="add-todo">
         <input type="button" id="add-btn" value="追加">
@@ -22,45 +24,56 @@
             <th> 状態 </th>
             <th></th>
         </thead>
-        <tbody  id="display">
+        <tbody id="display">
         </tbody>
     </table>
     <script>
         'use strict';
-        //配列を定義する
+        //配列定義、要素を取ってくる
         const todoList = [];
         const btn = document.getElementById('add-btn');
+        const radioItem = document.getElementsByName('select-item');
         const todoListElement = document.getElementById('display');
         btn.addEventListener('click', () => {
             displayList();
         });
         //空の配列に入力値を入れていくfunction
-        const displayList = () => {
+        const displayList = (filteredTodoList) => {
             const todo = document.getElementById("add-todo").value;
             document.getElementById("add-todo").value = "";
-            const todoItem = {task: todo, status: '作業中'};
             const tasks = todoList.task;
-            if(todo){
-                todoList.push(todoItem);
-                displayResult();
+            if (todoList.length >= 1) {
+                const countId = todoList[todoList.length - 1].id;
+                todoList.push({ id: countId + 1, task: todo, status: '作業中' });
+            } else {
+                todoList.push({ id: todoList.length, task: todo, status: '作業中' });
             }
+            if (document.getElementById("all-select").checked) {
+                displayResult(todoList);
+            } else if (document.getElementById("doing-select").checked) {
+                const filteredTodoList = todoList.filter(todo => todo.status === "作業中");
+                displayResult(filteredTodoList);
+            } else {
+                const filteredTodoList = todoList.filter(todo => todo.status === "完了");
+                displayResult(filteredTodoList);
+            };
         };
         //表示function
-        const displayResult = () => {
-            while(todoListElement.firstChild){
+        const displayResult = (filteredTodoList) => {
+            while (todoListElement.firstChild) {
                 todoListElement.removeChild(todoListElement.firstChild);
             };
-            todoList.forEach((todo, index) => {
+            filteredTodoList.forEach((todo, index) => {
                 const trList = document.createElement('tr');
                 //index番号の要素追加
                 const tdIndex = document.createElement('td');
-                tdIndex.textContent = index;
+                tdIndex.textContent = todo.id;
                 //コメントの要素追加
                 const tdValue = document.createElement('td');
                 tdValue.textContent = todo.task;
                 //作業中、削除ボタンの要素追加
                 const checkButton = createCheckButton(todo);
-                const removeButton = createRemoveButton(index);
+                const removeButton = createRemoveButton(index, todo);
                 //表示
                 trList.appendChild(tdIndex);
                 trList.appendChild(tdValue);
@@ -71,41 +84,85 @@
         };
         //作業中ボタンの生成function
         const createCheckButton = (todo) => {
+            const selectRadio = document.getElementsByName('select-item');
             const tdBtn = document.createElement('td');
             const checkBtn = document.createElement('input');
             checkBtn.setAttribute('type', 'button');
             checkBtn.setAttribute('value', todo.status);
-            checkBtn.addEventListener('click', () => {
+            checkBtn.addEventListener('click', (selectRadio) => {
                 checkTodo(todo);
             });
             return checkBtn;
         };
         //削除ボタンの生成function
-        const createRemoveButton = (index) => {
+        const createRemoveButton = (index, todo) => {
             const tdBtn = document.createElement('td');
             const removeBtn = document.createElement('input');
             removeBtn.setAttribute('type', 'button');
             removeBtn.setAttribute('value', '削除');
             removeBtn.addEventListener('click', () => {
-                removeTodo(index);
+                for (let i = 0; i < todoList.length; i++) {
+                    if (todoList[i]['id'] === todo.id) {
+                        console.log(i);
+                        removeTodo(index, todo, i);
+                    };
+                }
             });
             return removeBtn;
         };
+        //配列をフィルターして表示ファンクションに値を渡す
+        const checkTodoDisplay = (checkedRadioBtn) => {
+            const filteredTodoList = todoList.filter(todo => todo.status === checkedRadioBtn.value);
+            displayResult(filteredTodoList);
+        };
         //作業中を押す
-        const checkTodo = (todo) =>{
-            if(todo.status === "作業中"){
-                todo.status = "完了";
-            }else{
-                todo.status = "作業中";
+        const checkTodo = (todo) => {
+            const checkedRadioBtn = Array.from(radioItem).find(item => item.checked);
+            console.log(checkedRadioBtn.value);
+            if (checkedRadioBtn.value === "全て") {
+                if (todo.status === "作業中") {
+                    todo.status = "完了";
+                } else {
+                    todo.status = "作業中";
+                }
+                displayResult(todoList);
+            } else {
+                if (todo.status === "作業中") {
+                    todo.status = "完了";
+                    checkTodoDisplay(checkedRadioBtn);
+                } else {
+                    todo.status = "作業中";
+                    checkTodoDisplay(checkedRadioBtn);
+                };
             };
-            console.log(todo.status);
-            displayResult();
         };
         //削除を押す
-        const removeTodo = (index) => {
-            todoList.splice(index, 1);
-            displayResult();
+        const removeTodo = (index, todo, i) => {
+            const checkedRadioBtn = Array.from(radioItem).find(item => item.checked);
+            todoList.splice(i, 1);
+            if (checkedRadioBtn.value === "全て") {
+                displayResult(todoList);
+            } else {
+                if (checkedRadioBtn.value === "作業中") {
+                    checkTodoDisplay(checkedRadioBtn);
+                } else {
+                    checkTodoDisplay(checkedRadioBtn);
+                }
+            }
         };
+        //全体リストアップ、ステータスに合わせてリストアップ
+        const selectRadio = document.getElementsByName('select-item');
+        selectRadio.forEach((elem, todo) => {
+            elem.addEventListener('change', (event) => {
+                if (event.target.id === "all-select") {
+                    displayResult(todoList);
+                } else {
+                    const filteredTodoList = todoList.filter(todo => todo.status === event.target.defaultValue);
+                    displayResult(filteredTodoList);
+                }
+            });
+        });
     </script>
 </body>
+
 </html>
